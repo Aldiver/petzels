@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:petzels_app/Model/destination_model.dart';
 import 'package:petzels_app/Utils/const.dart';
-
+import 'package:petzels_app/Utils/navigations.dart';
 
 class TravelHomeScreen extends StatefulWidget {
   const TravelHomeScreen({super.key});
@@ -13,12 +13,6 @@ class TravelHomeScreen extends StatefulWidget {
 class _TravelHomeScreenState extends State<TravelHomeScreen> {
   String category = 'Consultation';
   int selectedIndex = 0;
-  List<IconData> icons = [
-    Icons.home_rounded,
-    Icons.location_on_rounded,
-    Icons.bookmark_outline_rounded,
-    Icons.settings_outlined,
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +45,8 @@ class _TravelHomeScreenState extends State<TravelHomeScreen> {
                   // Placeholder for the card swiper
                   Container(
                     height: size.height * 0.52,
-                    margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 20),
                     decoration: BoxDecoration(
                       color: Colors.grey.shade200,
                       borderRadius: BorderRadius.circular(20),
@@ -67,45 +62,48 @@ class _TravelHomeScreenState extends State<TravelHomeScreen> {
 
       // Bottom Navigation
       bottomSheet: BottomNavigationBar(
-        backgroundColor: Colors.white,
-        iconSize: 30,
-        unselectedItemColor: Colors.black26,
-        selectedItemColor: Colors.lightBlue,
-        type: BottomNavigationBarType.fixed,
-        onTap: (value) {
-          setState(() {
-            selectedIndex = value;
-          });
-        },
-        items: [
-          ...List.generate(
-            icons.length,
-            (index) => BottomNavigationBarItem(
-              icon: Column(
-                children: [
-                  const SizedBox(
-                    height: 10,
+      backgroundColor: Colors.white,
+      iconSize: 24,
+      unselectedItemColor: Colors.grey[400],
+      selectedItemColor: Colors.teal,
+      type: BottomNavigationBarType.fixed,
+      onTap: (value) {
+        setState(() {
+          selectedIndex = value;
+        });
+      },
+      items: [
+        ...List.generate(
+          navigationItems.length,
+          (index) => BottomNavigationBarItem(
+            icon: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Image.asset(
+                  navigationItems[index].iconPath,
+                  height: 20,
+                  color: selectedIndex == index
+                      ? Colors.teal
+                      : Colors.grey[400],
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  navigationItems[index].title,
+                  style: TextStyle(
+                    color: selectedIndex == index
+                        ? Colors.teal
+                        : Colors.grey[400],
+                    fontSize: 12,
                   ),
-                  Icon(
-                    icons[index],
-                  ),
-                  const SizedBox(height: 5),
-                  selectedIndex == index
-                      ? Container(
-                          height: 5,
-                          width: 5,
-                          decoration: const BoxDecoration(
-                              shape: BoxShape.circle, color: blue),
-                        )
-                      : Container(),
-                ],
-              ),
-              label: "",
+                ),
+              ],
             ),
+            label: '',
           ),
-        ],
-      ),
-    );
+        ),
+      ],
+    ),
+  );
   }
 
   // Search Bar Widget
@@ -154,14 +152,14 @@ class _TravelHomeScreenState extends State<TravelHomeScreen> {
   // Category Selection Widget
   SingleChildScrollView categorySelection() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(vertical: 15),
+      padding: const EdgeInsets.only(top: 10),
       scrollDirection: Axis.horizontal,
       child: Row(
         children: [
           ...List.generate(
             categories.length,
             (index) => Padding(
-              padding: const EdgeInsets.only(left: 15, right: 10),
+              padding: const EdgeInsets.only(left: 10, right: 10),
               child: GestureDetector(
                 onTap: () {
                   setState(() {
@@ -174,33 +172,39 @@ class _TravelHomeScreenState extends State<TravelHomeScreen> {
                   children: [
                     Container(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 15,
-                        vertical: 10,
+                        horizontal: 10,
+                        vertical: 5,
                       ),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
+                        border: Border(
+                          bottom: BorderSide(
+                            color: category == categories[index].title
+                                ? Colors.black
+                                : Colors.transparent,
+                            width: 2,
+                          ),
+                        ),
                         color: category == categories[index].title
-                            ? Colors.blue
+                            ? Colors.white
                             : Colors.white,
                       ),
                       child: Column(
                         children: [
                           Image.asset(
                             categories[index].iconPath,
-                            height: 40,
+                            height: 25,
                             color: category == categories[index].title
-                                ? Colors.white
-                                : Colors.grey[400],
+                                ? Colors.black
+                                : Colors.grey[600],
                           ),
-                          const SizedBox(height: 5),
+                          const SizedBox(height: 3),
                           Text(
                             categories[index].title,
                             style: TextStyle(
                               color: category == categories[index].title
-                                  ? Colors.white
+                                  ? Colors.black
                                   : Colors.grey[400],
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
                             ),
                           ),
                         ],
